@@ -12,11 +12,13 @@
 * todo:
 * todo: skip typescript type checking in production build (package)
 * todo:
-* todo: there a package that generates supported images for android/ios/web/favicon
+* todo: there's a package that generates supported images for android/ios/web/favicon
 *       find it and link it to *.[multi|support].[imgExt]
+* todo: convert images with "*.inj.svg" within 'em to html tags (in .d.ts)
 * todo:
 * todo: html-webpack-plugin package extensions
 * todo: add favicon
+* todo: convert an image to favicon via file name
 * todo:
 * todo: setup lazy import components wrapper
 * todo: setup lazy loading components ( maybe integrate into component name *.lazy.tsx )
