@@ -1,5 +1,5 @@
 {
-  "name": "webpackProj",
+  "name": "webpack-template",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -39,4 +39,3 @@
     "react-router-dom": "^5.2.0"
   }
 }
-

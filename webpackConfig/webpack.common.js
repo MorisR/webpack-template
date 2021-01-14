@@ -166,14 +166,6 @@ module.exports = {
 
     plugins: [
 
-        new HtmlWebpackPlugin({
-            template: path.resolve(pathToSrc, "index.html"),
-            filename: "index.html",
-            inject: true,
-            scriptLoading: "defer" // injects the references into the head and body of the html files:"defer"
-
-        }),
-
         //html loader
         new MergeablePlugin(HtmlWebpackPlugin, {
             template: path.resolve(pathToSrc, "index.html"),
