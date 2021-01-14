@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es6",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true, // allows to use "import .. from" instead of "import * as .. from"
+    "esModuleInterop" : true, // allows to use "import .. from" instead of "import * as .. from"
+  }
+}
