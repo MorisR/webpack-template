@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --env NODE_ENV=production ",
-    "build": "webpack --env NODE_ENV=production",
+    "start": "webpack serve --env common --env prod",
+    "build": "webpack --env common --env dev",
     "startWithDepricationTrack": "node --trace-deprecation node_modules/.bin/webpack serve"
   },
   "keywords": [],

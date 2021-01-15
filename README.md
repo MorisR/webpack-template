@@ -14,7 +14,8 @@
     - [ ] MergablePlugin
     - [ ] __order
     - [ ] webpack.[env].js
-    - [ ] webpack.{common|all}.js
+    - [ ] webpack.default.js - always first on merge order
+    - [ ] use "webpack(\w?\d?)*.[env].js" to set the order (e.g. webpack_0.production.js)
 - [ ] document package.json scripts
 - [ ] state potential problems that could accrue
     - [ ] "resolve-url-loader" plugin
