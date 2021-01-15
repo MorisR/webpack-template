@@ -1,6 +1,6 @@
 const path = require("path");
 const { DefinePlugin } = require("webpack");
-const { MergeablePlugin } = require("./MergeablePlugin");
+const { MergeablePlugin } = require("./plugins/MergeablePlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
 
