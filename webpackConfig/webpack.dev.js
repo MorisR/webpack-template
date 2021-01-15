@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MergeablePlugin = require("./MergeablePlugin");
+const {MergeablePlugin} = require("./MergeablePlugin");
 const {DefinePlugin} = require("webpack");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
