@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --env development",
-    "build": "webpack --env production",
+    "start": "webpack serve --env common --env prod",
+    "build": "webpack --env common --env dev",
     "startWithDepricationTrack": "node --trace-deprecation node_modules/.bin/webpack serve"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.1.7",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.1",
+    "fs-readdir-recursive": "^1.1.0",
     "html-webpack-plugin": "^5.0.0-beta.4",
     "image-webpack-loader": "^7.0.1",
     "mini-css-extract-plugin": "^1.3.3",
