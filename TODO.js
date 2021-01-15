@@ -63,9 +63,9 @@
 * todo: add a template that opts out of linter
 * todo: add a template that opts out of serviceWorker
 *
-* todo: configure/optimize clean-webpack-plugin 
-* todo: setup gzip-loader 
-* todo: setup multilanguage support(i18n-loader)
+* todo: configure/optimize clean-webpack-plugin
+* todo: setup gzip-loader
+* todo: setup metalanguage support(i18n-loader)
 * todo: setup thread-loader/worker-loader
 *
 * todo: go over sass documentation
