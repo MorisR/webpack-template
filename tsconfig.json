@@ -10,5 +10,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true, // allows to use "import .. from" instead of "import * as .. from"
     "esModuleInterop" : true, // allows to use "import .. from" instead of "import * as .. from"
-  }
+    
+  },
+  "include": ["./webpackConfig/types", "./src"]
 }

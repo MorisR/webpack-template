@@ -43,19 +43,19 @@ module.exports = {
     //#region ------plugins + rules-----------------------------------------------------
 
     module: {
-        rules: [
-            //cancel css source maps
-            //todo cancel scss/sass source maps
-            {
-                test: /\.css$/i,
-                use: [
-                    {
-                        loader: "css-loader",
-                        options: {sourceMap: true}
-                    }
-                ]
-            }
-        ]
+    //     rules: [
+    //         //cancel css source maps
+    //         //todo cancel scss/sass source maps
+    //         {
+    //             test: /\.css$/i,
+    //             use: [
+    //                 {
+    //                     loader: "css-loader",
+    //                     options: {sourceMap: true}
+    //                 }
+    //             ]
+    //         }
+    //     ]
     },
 
     plugins: [
