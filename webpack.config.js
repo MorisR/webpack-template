@@ -1,32 +1,32 @@
 const path = require("path")
 const readDir = require("fs-readdir-recursive");
-const MergeablePlugin = require("./webpackConfig/MergeablePlugin");
-const {mergeWithRules, mergeWithCustomize, merge} = require("webpack-merge")
+const {MergeConfigWithMergeablePlugin} = require("./webpackConfig/MergeablePlugin");
+const {mergeWithRules, mergeWithCustomize} = require("webpack-merge")
 
 const webpackConfigDir = path.resolve(__dirname, "webpackConfig")
 const webpackConfigFileNameRegex = /^webpack\.\w+\.js$/i;
 
+const mergeRules = mergeWithRules({
+    rules: {
+        test: "match",
+        use: {
+            loader: "match",
+            options: "merge",
+        },
+    },
+})
+function sortRules(rules) {
+    return rules.sort((a, b) => (a.__order || Number.POSITIVE_INFINITY) - (b.__order || Number.POSITIVE_INFINITY))
+        .forEach(rule => delete rule.__order)
+}
 function mergeConfigs(...configObjects) {
 
-    let res;
-    const mergeRules = mergeWithRules({
-        rules: {
-            test: "match",
-            use: {
-                loader: "match",
-                options: "merge",
-            },
-        },
-    })
-
-    res = mergeWithCustomize({
+    return mergeWithCustomize({
         customizeObject: (a, b, key) => {
             if (key === "module") {
 
                 const res = mergeRules(a, b);
-                res.rules
-                    .sort((a, b) => (a.__order || Number.POSITIVE_INFINITY) - (b.__order || Number.POSITIVE_INFINITY))
-                    .forEach(rule => delete rule.__order)
+                res.rules= sortRules(res.rules)
                 return res
             }
 
@@ -34,41 +34,13 @@ function mergeConfigs(...configObjects) {
             return undefined;
         },
         customizeArray: (a, b, key) => {
-
-            // merge elements of type "MergeablePlugin"
-            if (key === "plugins") {
-                const a_cantBeMerged = a.filter((entry) => entry.constructor !== MergeablePlugin)
-                const b_cantBeMerged = b.filter((entry) => entry.constructor !== MergeablePlugin)
-                let elementsToMerge = [
-                    ...a.filter((entry) => entry.constructor === MergeablePlugin),
-                    ...b.filter((entry) => entry.constructor === MergeablePlugin)
-                ]
-
-                const mergeRes = []
-                while (elementsToMerge.length) {
-                    const element = elementsToMerge.shift()
-
-                    const elementsOfSameType = elementsToMerge.filter(e => e.moduleClass.constructor === element.moduleClass.constructor)
-                    elementsToMerge = elementsToMerge.filter(e => e.moduleClass.constructor !== element.moduleClass.constructor)
-
-                    const mergedProps = merge(element.props, ...elementsOfSameType.map(e => e.props))
-                    mergeRes.push(new element.moduleClass(mergedProps))
-                }
-
-
-                return [...a_cantBeMerged, ...b_cantBeMerged, ...mergeRes];
-
-            }
-            return undefined
+            return MergeConfigWithMergeablePlugin(a,b,key)
         }
 
-    })(...configObjects)
+    })(...configObjects,{plugins:[]})
 
-
-    return res
 }
-
- function getConfigFilePaths() {
+function getConfigFilePaths() {
     const dirContent =  readDir(webpackConfigDir)
     const webpackConfigFiles = dirContent.filter((dir) => webpackConfigFileNameRegex.test(path.basename(dir)))
     const res = new Map();
@@ -111,7 +83,7 @@ function mergeConfigs(...configObjects) {
      }
 
 
-     return mergeConfigs(...configObjects,{plugins:[]})
+     return mergeConfigs(...configObjects)
  }
 
 module.exports = getConfig
