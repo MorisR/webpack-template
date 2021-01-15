@@ -1,9 +1,10 @@
-const dev = require("./webpackConfig/webpack.dev")
-const prod = require("./webpackConfig/webpack.prod")
-const common = require("./webpackConfig/webpack.common")
+const path = require("path")
+const readDir = require("fs-readdir-recursive");
 const MergeablePlugin = require("./webpackConfig/MergeablePlugin");
 const {mergeWithRules, mergeWithCustomize, merge} = require("webpack-merge")
 
+const webpackConfigDir = path.resolve(__dirname, "webpackConfig")
+const webpackConfigFileNameRegex = /^webpack\.\w+\.js$/i;
 
 function mergeConfigs(...configObjects) {
 
@@ -24,8 +25,8 @@ function mergeConfigs(...configObjects) {
 
                 const res = mergeRules(a, b);
                 res.rules
-                    .sort((a, b) => (a.__order || Number.POSITIVE_INFINITY ) - (b.__order || Number.POSITIVE_INFINITY))
-                    .forEach(rule=>delete rule.__order)
+                    .sort((a, b) => (a.__order || Number.POSITIVE_INFINITY) - (b.__order || Number.POSITIVE_INFINITY))
+                    .forEach(rule => delete rule.__order)
                 return res
             }
 
@@ -67,18 +68,50 @@ function mergeConfigs(...configObjects) {
     return res
 }
 
+ function getConfigFilePaths() {
+    const dirContent =  readDir(webpackConfigDir)
+    const webpackConfigFiles = dirContent.filter((dir) => webpackConfigFileNameRegex.test(path.basename(dir)))
+    const res = new Map();
+    webpackConfigFiles.forEach(relativeDir => {
+        const dir = path.resolve(webpackConfigDir,relativeDir)
+        const configType = path.basename(dir).toLowerCase().split(".")[1]
 
-function getConfig(env) {
+        if (res.has(configType))
+            res.get(configType).push(dir)
+        else
+            res.set(configType, [dir])
 
-    if (env.production)
-        return mergeConfigs(common, prod);
-    if (env.development)
-        return mergeConfigs(common, dev);
-
-    throw new Error(`NODE_ENV must equal one of the following ["production","development"]`)
-
+    })
+    return res;
 }
 
 
-// console.log(getConfig({development:true}).plugins)
+ function getConfig(env) {
+
+     const configFilesPaths = getConfigFilePaths()
+     const matchingFilePaths = []
+
+     // const entries = [...Object.keys(env||{})].filter(key=>env[key] === true)
+     const entries = ["all", "common", env?.NODE_ENV]
+
+     //loop over options and get matching config file paths
+     for (let envEntry of entries) {
+         if (configFilesPaths.has(envEntry)) {
+             matchingFilePaths.push(...configFilesPaths.get(envEntry))
+             // configFilesPaths.delete(envEntry)
+         }
+     }
+
+     //read files
+     const configObjects = matchingFilePaths.map(path => require(path))
+
+     if (!configObjects.length || !env?.NODE_ENV) {
+         const options = [...configFilesPaths.keys()].join(", ");
+         throw new Error(`NODE_ENV must equal one of the following [${options}]`)
+     }
+
+
+     return mergeConfigs(...configObjects,{plugins:[]})
+ }
+
 module.exports = getConfig
