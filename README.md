@@ -1,0 +1,21 @@
+# Documentation 
+
+- [ ] document images naming convention 
+    - [ ] .same.[img]
+    - [ ] .res.[img]
+    - [ ] .str.[img]
+    - [ ] .inj.[svg]
+- [ ] document css naming convention
+    - [ ] .module.[style]
+    - [ ] .lazy.[style]
+    - [ ] .tag.[style]
+    - [ ] .singleton.[style] (?)
+- [ ] document webpack custom configuration  
+    - [ ] MergablePlugin
+    - [ ] __order
+    - [ ] webpack.[env].js
+    - [ ] webpack.{common|all}.js
+- [ ] document package.json scripts
+- [ ] state potential problems that could accrue
+    - [ ] "resolve-url-loader" plugin
+- [ ]  
