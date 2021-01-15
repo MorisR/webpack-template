@@ -63,6 +63,7 @@
 * todo: add a template that opts out of linter
 * todo: add a template that opts out of serviceWorker
 *
+* todo: configure/optimize clean-webpack-plugin 
 *
 * todo: go over sass documentation
 * todo: go over ts documentation
