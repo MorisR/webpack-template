@@ -16,7 +16,7 @@ install "mini-css-extract-plugin"
 
 
 typescript-----------------------------------------------------------------------------------------
-* todo: skip typescript type checking in production build (package)
+skip typescript type checking in production build (package)
 * todo: add babel autoprefixer or setup typescript settings
 * todo: convert images with "*.inj.svg" within 'em to html tags (in .d.ts)
 
@@ -54,6 +54,7 @@ debug mode----------------------------------------------------------------------
 * todo: resolve console logs in browser
 * todo: show overlay errors
 * todo: find a prettier cli logger for webpack builds (linter?)
+* todo: add support for --silent logging across all plugins/loaders
 
 service worker----------------------------------------------------------------------------------------
 * todo: cashing vs service worker cashing

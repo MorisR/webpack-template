@@ -5,6 +5,7 @@ const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 
 const pathToDist = path.resolve(__dirname, "..", "dist");
@@ -17,7 +18,7 @@ function minifyInlineSvg(content) {
     return svgToMiniDataURI(content);
 }
 
-module.exports = ({sourcemap = false})=>({
+module.exports = ({sourcemap = false}) => ({
     //#region ------basic---------------------------------------------------------------
 
     target: "web",
@@ -34,7 +35,7 @@ module.exports = ({sourcemap = false})=>({
     resolve: {
         symlinks: false,
     },
-    devtool: sourcemap? 'source-map' : false,
+    devtool: sourcemap ? 'source-map' : false,
     //#endregion
 
     //#region ------plugins + rules-----------------------------------------------------
@@ -42,12 +43,17 @@ module.exports = ({sourcemap = false})=>({
     module: {
         rules: [
             //#region ts/tsx files ----------------
-
             {
                 test: /\.tsx?$/i,
-                use: "ts-loader",
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        transpileOnly: true
+                    }
+                },
                 include: pathToInclude,
                 exclude: pathToNodeModules,
+
             },
 
             //#endregion
@@ -72,7 +78,7 @@ module.exports = ({sourcemap = false})=>({
                 test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                    publicPath:"/styles/"
+                    publicPath: "/styles/"
                 }
             },
             {
@@ -89,21 +95,21 @@ module.exports = ({sourcemap = false})=>({
             //load sass/scss + css globals/locals(modules)/pure with explicit exports (icss)
             {
                 test: /^.*(?=\.icss\.).*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: true,sourcemap}),
+                use: styleProcessingRules({sass: false, icss: true, sourcemap}),
             },
             {
                 test: /^.*(?=\.icss\.).*\.s[ac]ss$/i,
-                use: styleProcessingRules({sass: true, icss: true,sourcemap}),
+                use: styleProcessingRules({sass: true, icss: true, sourcemap}),
             },
 
             //load sass/scss + css globals/locals(modules)/pure
             {
                 test: /^((?!\.icss\.).)*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: false,sourcemap}),
+                use: styleProcessingRules({sass: false, icss: false, sourcemap}),
             },
             {
                 test: /^((?!\.icss\.).)*\.s[ca]ss$/i,
-                use: styleProcessingRules({sass: true, icss: false,sourcemap}),
+                use: styleProcessingRules({sass: true, icss: false, sourcemap}),
             },
 
             //#endregion
@@ -177,6 +183,22 @@ module.exports = ({sourcemap = false})=>({
     },
 
     plugins: [
+
+        //faster ts type checking
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                memoryLimit: 4096,
+                compilerOptions: {
+                    skipLibCheck: true,
+                    sourceMap: sourcemap,
+                    inlineSourceMap: sourcemap,
+                    declarationMap: false
+                }
+            }
+        }),
+
+
+        //loads css as .css files and not from js bundle
         new MiniCssExtractPlugin({
             filename: '[name].[hash].css',
             chunkFilename: '[name].[contenthash].js',
