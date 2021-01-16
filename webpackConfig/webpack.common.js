@@ -6,10 +6,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const loadAllEnvConfig = require("./plugins/envPlugin");
 
 
 const pathToDist = path.resolve(__dirname, "..", "dist");
 const pathToSrc = path.resolve(__dirname, "..", "src");
+
 const pathToNodeModules = /node_modules/;
 const pathToInclude = /src/;
 
@@ -18,7 +20,11 @@ function minifyInlineSvg(content) {
     return svgToMiniDataURI(content);
 }
 
-module.exports = ({sourcemap = false}) => ({
+module.exports = (env) => {
+    const {sourcemap = false} = env
+    loadAllEnvConfig(env)
+        console.log(loadAllEnvConfig(env))
+    return ({
     //#region ------basic---------------------------------------------------------------
 
     target: "web",
@@ -217,7 +223,8 @@ module.exports = ({sourcemap = false}) => ({
 
         //env variables
         new MergeablePlugin(DefinePlugin, {}),
+          
     ],
 
     //#endregion
-});
+})};

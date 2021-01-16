@@ -7,3 +7,5 @@ rootElement.style.background = "red";
 // rootElement.innerHTML = svg;
 rootElement.textContent = "test"
 
+console.log(process.env.globalENV)
+console.log(process.env.devENV)
