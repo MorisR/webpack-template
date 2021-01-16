@@ -21,7 +21,6 @@ function sortRules(rules) {
         .forEach(rule => delete rule.__order)
     return rules;
 }
-
 function mergeConfigs(...configObjects) {
 
     return mergeWithCustomize({
@@ -43,7 +42,6 @@ function mergeConfigs(...configObjects) {
     })(...configObjects, {plugins: []})
 
 }
-
 function getConfigFilePaths() {
     const dirContent = readDir(webpackConfigDir)
     const webpackConfigFiles = dirContent.filter((dir) => webpackConfigFileNameRegex.test(path.basename(dir)))
@@ -60,13 +58,15 @@ function getConfigFilePaths() {
     })
     return res;
 }
-
+function sortConfigFilesByName(a,b){
+    return path.basename(a).toLowerCase() - path.basename(b).toLowerCase()
+}
 
 function getConfig(env) {
 
     const configFilesPaths = getConfigFilePaths()
     const availableWebpackOptions = [...configFilesPaths.keys()]
-    const envOptions = Object.keys(env || {}).filter(key => env[key] === true).sort()
+    const envOptions = Object.keys(env || {}).filter(key => env[key] === true)
     const matchingFilePaths = []
 
     //if no config files were found
@@ -74,18 +74,38 @@ function getConfig(env) {
         throw new Error("No webpack.[config_type].js were found in /webpackConfig dir")
 
     //load variables from entries
-    const entries = ["default", ...envOptions].filter(x=>x)
+    const entries = [...envOptions,"default"]
 
     //loop over options and get matching config file paths
     for (let envEntry of entries) {
+        const isLastElement = envEntry === "default"
+
+        //sort all config files (default excluded)
+        if(isLastElement)
+            matchingFilePaths.sort(sortConfigFilesByName)
+
         if (configFilesPaths.has(envEntry)) {
-            matchingFilePaths.push(...configFilesPaths.get(envEntry))
+            //load default at the beginning of the array
+            if(isLastElement)
+            {
+                //sort default config files by name
+                const defaultConfig = [...configFilesPaths.get(envEntry)].sort(sortConfigFilesByName)
+                //add em to the array
+                matchingFilePaths.unshift(...defaultConfig)
+            }
+
+            //load all other config file paths at the end of the array
+            else matchingFilePaths.push(...configFilesPaths.get(envEntry))
+
+            //delete found result so they wont get duplicated
             configFilesPaths.delete(envEntry)
         }
     }
 
     //read config files
-    const configObjects = matchingFilePaths.map(path => require(path))
+    const configObjects = matchingFilePaths
+        .map(path => require(path))
+        .map(config=> typeof config ==='function'? config(env) : config)
 
     //if no config files were found throw an error
     if (!configObjects.length)
