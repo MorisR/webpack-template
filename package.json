@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --env common --env prod",
-    "build": "webpack --env common --env dev",
+    "start": "webpack serve --env common --env dev",
+    "build": "webpack --env common --env prod",
     "startWithDepricationTrack": "node --trace-deprecation node_modules/.bin/webpack serve"
   },
   "keywords": [],
@@ -15,6 +15,8 @@
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
+    "@types/webpack": "^4.41.26",
+    "@types/webpack-dev-server": "^3.11.1",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.1",
     "fs-readdir-recursive": "^1.1.0",

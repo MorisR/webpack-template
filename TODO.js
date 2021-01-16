@@ -73,5 +73,8 @@
 * todo: go over tsconfig.js available settings
 * todo: document template and all it's features
 * todo: create an NPX command tht clones th template
-*
+* todo: check resource query and what it is used for + best file name
+*   https://github.com/webpack/loader-utils#interpolatename
+*   https://stackoverflow.com/questions/59194365/webpack-4-hash-and-contenthash-and-chunkhash-when-to-use-which
+*   - css, resources, js/jsx/ts/tsx files, chunks,
 * */
