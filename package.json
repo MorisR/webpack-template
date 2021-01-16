@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "-----------------------------build-scripts----------------------------------": "",
-    "start": "webpack serve --env common --env dev  --env sourcemap",
+    "start": "webpack serve --env common --env dev --env sourcemap --env loadSystemEnv",
     "build": "webpack --env common --env prod",
     "buildWithSourcemap": "webpack --env common --env prod --env sourcemap",
     "--------------------------------linter---------------------------------------": "",

@@ -1,12 +1,11 @@
 const styleProcessingRules = require("./rules/styleProcessingRules");
 const path = require("path");
-const {DefinePlugin} = require("webpack");
 const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const loadAllEnvConfig = require("./plugins/envPlugin");
+const {loadProjectEnv,loadSystemEnv} = require("./plugins/envPlugin");
 
 
 const pathToDist = path.resolve(__dirname, "..", "dist");
@@ -21,210 +20,209 @@ function minifyInlineSvg(content) {
 }
 
 module.exports = (env) => {
-    const {sourcemap = false} = env
-    loadAllEnvConfig(env)
-        console.log(loadAllEnvConfig(env))
+    const {sourcemap = false} = env;
     return ({
-    //#region ------basic---------------------------------------------------------------
+        //#region ------basic---------------------------------------------------------------
 
-    target: "web",
-    entry: "./src/index.tsx",
-    output: {
-        path: pathToDist,
-        assetModuleFilename: "resources/[name].[contenthash][ext]",
-        filename: '[name].[contenthash].js'
-    },
+        target: "web",
+        entry: "./src/index.tsx",
+        output: {
+            path: pathToDist,
+            assetModuleFilename: "resources/[name].[contenthash][ext]",
+            filename: '[name].[contenthash].js'
+        },
 
-    //#endregion
+        //#endregion
 
-    //#region ------dev + optimizations-------------------------------------------------
-    resolve: {
-        symlinks: false,
-    },
-    devtool: sourcemap ? 'source-map' : false,
-    //#endregion
+        //#region ------dev + optimizations-------------------------------------------------
+        resolve: {
+            symlinks: false,
+        },
+        devtool: sourcemap ? 'source-map' : false,
+        //#endregion
 
-    //#region ------plugins + rules-----------------------------------------------------
+        //#region ------plugins + rules-----------------------------------------------------
 
-    module: {
-        rules: [
-            //#region ts/tsx files ----------------
-            {
-                test: /\.tsx?$/i,
-                use: {
-                    loader: "ts-loader",
-                    options: {
-                        transpileOnly: true
-                    }
-                },
-                include: pathToInclude,
-                exclude: pathToNodeModules,
+        module: {
+            rules: [
+                //#region ts/tsx files ----------------
+                {
+                    test: /\.tsx?$/i,
+                    use: {
+                        loader: "ts-loader",
+                        options: {
+                            transpileOnly: true
+                        }
+                    },
+                    include: pathToInclude,
+                    exclude: pathToNodeModules,
 
-            },
-
-            //#endregion
-
-            //#region style files -----------------
-
-
-            // style-loader/mini-css-extract-plugin - link the style to the html (linkTags/lazy/styleTags)
-            {
-                test: /^.*(?=\.lazy\.).*\.(css|s[ac]ss)$/i,
-                use: {
-                    loader: "style-loader",
-                    options: {
-                        esModule: true,
-                        injectType: "lazyStyleTag"
-                    }
                 },
 
-            },
-            {
-                // mini-css-extract-plugin - load css files as is ( not in/through js)
-                test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                    publicPath: "/styles/"
+                //#endregion
+
+                //#region style files -----------------
+
+
+                // style-loader/mini-css-extract-plugin - link the style to the html (linkTags/lazy/styleTags)
+                {
+                    test: /^.*(?=\.lazy\.).*\.(css|s[ac]ss)$/i,
+                    use: {
+                        loader: "style-loader",
+                        options: {
+                            esModule: true,
+                            injectType: "lazyStyleTag"
+                        }
+                    },
+
+                },
+                {
+                    // mini-css-extract-plugin - load css files as is ( not in/through js)
+                    test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: "/styles/"
+                    }
+                },
+                {
+                    test: /^((?!\.(link|lazy)\.).)*\.(css|s[ca]ss)$/i,
+                    use: {
+                        loader: "style-loader",
+                        options: {
+                            esModule: true,
+                        }
+                    },
+
+                },
+
+                //load sass/scss + css globals/locals(modules)/pure with explicit exports (icss)
+                {
+                    test: /^.*(?=\.icss\.).*\.css$/i,
+                    use: styleProcessingRules({sass: false, icss: true, sourcemap}),
+                },
+                {
+                    test: /^.*(?=\.icss\.).*\.s[ac]ss$/i,
+                    use: styleProcessingRules({sass: true, icss: true, sourcemap}),
+                },
+
+                //load sass/scss + css globals/locals(modules)/pure
+                {
+                    test: /^((?!\.icss\.).)*\.css$/i,
+                    use: styleProcessingRules({sass: false, icss: false, sourcemap}),
+                },
+                {
+                    test: /^((?!\.icss\.).)*\.s[ca]ss$/i,
+                    use: styleProcessingRules({sass: true, icss: false, sourcemap}),
+                },
+
+                //#endregion
+
+                //#region image files -----------------
+
+                //load svg files inline - copy the component's code
+                {
+                    test: /^.*(?=\.inj\.).*\.svg$/i,
+                    // test: /\.(inj|same\.inj|inj\.same)\.svg$/i,
+                    type: "asset/source",
+                },
+
+                //load an image as a resource
+                {
+                    test: /^.*(?=\.res\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng|svg)$/i,
+                    // test: /\.(res|same\.res|res\.same)\.(png|jpg|jpeg|gif|svg)$/i,
+                    type: "asset/resource",
+                    generator: {
+                        filename: "resources/images/[name].[hash][ext]",
+                    },
+                },
+
+                //load an image inline (as base64)
+                {
+                    test: /^.*(?=\.str\.).*\.svg$/i,
+                    // test: /\.(str|same\.str|str\.same)\.svg$/i,
+                    type: "asset/inline",
+                    generator: {
+                        dataUrl: minifyInlineSvg,
+                    },
+                },
+                {
+                    test: /^.*(?=\.str\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
+                    // test: /\.(str|same\.str|str\.same)\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
+                    type: "asset/inline",
+                },
+
+                //load images
+                {
+                    test: /^((?!\.str|inj|res\.).)*\.svg$/i,
+                    type: "asset",
+                    generator: {
+                        dataUrl: minifyInlineSvg,
+                        filename: "resources/images/[name].[hash][ext]",
+                    },
+                },
+                {
+                    test: /^.*(?!\.str|inj|res\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
+                    // test: /^((?!\.str|res\.).)*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
+                    type: "asset",
+                    generator: {
+                        filename: "resources/images/[name].[hash][ext]",
+                    },
+                },
+
+                //#endregion
+
+                //#region font files ------------------
+
+                {
+                    test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                    type: "asset/resource",
+                    generator: {
+                        filename: "resources/fonts/[name].[hash][ext]",
+                    },
+                },
+
+                //#endregion
+            ],
+        },
+
+        plugins: [
+
+            //faster ts type checking
+            new ForkTsCheckerWebpackPlugin({
+                typescript: {
+                    memoryLimit: 4096,
+                    compilerOptions: {
+                        skipLibCheck: true,
+                        sourceMap: sourcemap,
+                        inlineSourceMap: sourcemap,
+                        declarationMap: false
+                    }
+                },
+                eslint: {
+                    files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
                 }
-            },
-            {
-                test: /^((?!\.(link|lazy)\.).)*\.(css|s[ca]ss)$/i,
-                use: {
-                    loader: "style-loader",
-                    options: {
-                        esModule: true,
-                    }
-                },
-
-            },
-
-            //load sass/scss + css globals/locals(modules)/pure with explicit exports (icss)
-            {
-                test: /^.*(?=\.icss\.).*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: true, sourcemap}),
-            },
-            {
-                test: /^.*(?=\.icss\.).*\.s[ac]ss$/i,
-                use: styleProcessingRules({sass: true, icss: true, sourcemap}),
-            },
-
-            //load sass/scss + css globals/locals(modules)/pure
-            {
-                test: /^((?!\.icss\.).)*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: false, sourcemap}),
-            },
-            {
-                test: /^((?!\.icss\.).)*\.s[ca]ss$/i,
-                use: styleProcessingRules({sass: true, icss: false, sourcemap}),
-            },
-
-            //#endregion
-
-            //#region image files -----------------
-
-            //load svg files inline - copy the component's code
-            {
-                test: /^.*(?=\.inj\.).*\.svg$/i,
-                // test: /\.(inj|same\.inj|inj\.same)\.svg$/i,
-                type: "asset/source",
-            },
-
-            //load an image as a resource
-            {
-                test: /^.*(?=\.res\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng|svg)$/i,
-                // test: /\.(res|same\.res|res\.same)\.(png|jpg|jpeg|gif|svg)$/i,
-                type: "asset/resource",
-                generator: {
-                    filename: "resources/images/[name].[hash][ext]",
-                },
-            },
-
-            //load an image inline (as base64)
-            {
-                test: /^.*(?=\.str\.).*\.svg$/i,
-                // test: /\.(str|same\.str|str\.same)\.svg$/i,
-                type: "asset/inline",
-                generator: {
-                    dataUrl: minifyInlineSvg,
-                },
-            },
-            {
-                test: /^.*(?=\.str\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
-                // test: /\.(str|same\.str|str\.same)\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
-                type: "asset/inline",
-            },
-
-            //load images
-            {
-                test: /^((?!\.str|inj|res\.).)*\.svg$/i,
-                type: "asset",
-                generator: {
-                    dataUrl: minifyInlineSvg,
-                    filename: "resources/images/[name].[hash][ext]",
-                },
-            },
-            {
-                test: /^.*(?!\.str|inj|res\.).*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
-                // test: /^((?!\.str|res\.).)*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|webp|avif|apng)$/i,
-                type: "asset",
-                generator: {
-                    filename: "resources/images/[name].[hash][ext]",
-                },
-            },
-
-            //#endregion
-
-            //#region font files ------------------
-
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/i,
-                type: "asset/resource",
-                generator: {
-                    filename: "resources/fonts/[name].[hash][ext]",
-                },
-            },
-
-            //#endregion
-        ],
-    },
-
-    plugins: [
-
-        //faster ts type checking
-        new ForkTsCheckerWebpackPlugin({
-            typescript: {
-                memoryLimit: 4096,
-                compilerOptions: {
-                    skipLibCheck: true,
-                    sourceMap: sourcemap,
-                    inlineSourceMap: sourcemap,
-                    declarationMap: false
-                }
-            },
-            eslint: {
-                files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
-            }
-        }),
+            }),
 
 
-        //loads css as .css files and not from js bundle
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[name].[contenthash].js',
-        }),
+            //loads css as .css files and not from js bundle
+            new MiniCssExtractPlugin({
+                filename: '[name].[hash].css',
+                chunkFilename: '[name].[contenthash].js',
+            }),
 
-        //html loader
-        new MergeablePlugin(HtmlWebpackPlugin, {
-            template: path.resolve(pathToSrc, "index.html"),
-            filename: "index.html",
-            inject: true,
-            scriptLoading: "defer", // injects the references into the head and body of the html files:"defer"
-        }),
+            //html loader
+            new MergeablePlugin(HtmlWebpackPlugin, {
+                template: path.resolve(pathToSrc, "index.html"),
+                filename: "index.html",
+                inject: true,
+                scriptLoading: "defer", // injects the references into the head and body of the html files:"defer"
+            }),
 
-        //env variables
-        new MergeablePlugin(DefinePlugin, {}),
-          
-    ],
+            // env variables from "/emv/[mode].env" files
+            ...loadProjectEnv(env),
+            env?.loadSystemEnv && loadSystemEnv()
+        ].filter(x=>x),
 
-    //#endregion
-})};
+        //#endregion
+    })
+};
