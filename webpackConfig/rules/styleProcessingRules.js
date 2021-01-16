@@ -5,7 +5,6 @@
  * @param {boolean} [props.sourcemap] - is sourcemap enabled.
  * @param {boolean} [props.sass] - load sass rules
  * @param {boolean} [props.icss] - load sass rules
- * @param {"styleTag"|"singletonStyleTag"|"lazyStyleTag"|"lazySingletonStyleTag"|"linkTag"} [props.injectType] - is sourcemap enabled
  * @return {RuleSetRule[]}
  */
 function styleProcessingRules(props) {
@@ -24,6 +23,7 @@ function styleProcessingRules(props) {
             loader:"css-loader",
             options: {
                 esModule: true,
+                importLoaders:1,
                 modules: {
                     compileType: icss? "icss" : "module",
                     localIdentName: "[name]__[hash:base64:5]",
@@ -53,8 +53,9 @@ function styleProcessingRules(props) {
 
     //load sass
     if (sass) {
-        res[0].options.importLoaders = 2;
-        res.push({
+        res[0].options.importLoaders = 3;
+        res.push(
+            {
                 loader: "resolve-url-loader",
                 options: {
                     sourceMap,
