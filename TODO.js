@@ -1,12 +1,14 @@
 /*
-* todo: load sass files
-* todo: install dist-sass to make compilation faster
+* load sass files
+* add .module.{css|sass|scss} support
+* add .global.{css|sass|scss} support
+* add .lazy.{css|sass|scss} support
+* add .inj.{css|sass|scss} support - inline css
+* add .tag.{css|sass|scss} support - tag css
 * todo: install postcss (?)
-* todo: add .module.{css|sass|scss} support
-* todo: add .global.{css|sass|scss} support
-* todo: add .lazy.{css|sass|scss} support
-* todo: add .inj.{css|sass|scss} support - inline css
-* todo: add .tag.{css|sass|scss} support - tag css
+*     - setup browserlist
+*     - setup plugins + plugins options
+* todo: install dist-sass to make compilation faster
 * todo: install "mini-css-extract-plugin"
 * todo: add css "hot" support
 * todo:
