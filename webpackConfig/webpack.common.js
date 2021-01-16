@@ -194,6 +194,9 @@ module.exports = ({sourcemap = false}) => ({
                     inlineSourceMap: sourcemap,
                     declarationMap: false
                 }
+            },
+            eslint: {
+                files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
             }
         }),
 

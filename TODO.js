@@ -66,31 +66,34 @@ service worker------------------------------------------------------------------
 * todo: add a script that opts out of serviceWorker
 
 add other packages-------------------------------------------------------------------------------------
-    testing
+------testing------
 * todo: add testing webpack config
 * todo: add testing package ( *.test.ts )
 * todo: skip testing files from other builds ( maybe add *.ignore.ts )
 * todo: add package.json scripts
 * todo: add a script that opts out of testing
 
-    storybook
+------storybook------
 * todo: add storybook webpack config
 * todo: add storybook package ( *.storybook.ts )
 * todo: skip storybook files from other builds
 * todo: add package.json scripts
 * todo: add a script that opts out of storybook
 
-    linter
-* todo: setup linter
-* todo: add package.json scripts
+------linter------
+https://www.npmjs.com/package/fork-ts-checker-webpack-plugin#eslint-options
+https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project
+setup linter
+* todo: setup eslint settings/custom configuration
+* todo: setup eslint logging level
 * todo: add a script that opts out of linter
 
-    prettier
+------prettier------
 * todo: setup prettier
 * todo: add a script that opts out of prettier
 
 
-    multi language support
+------multi language support------
 * todo: setup metalanguage support(i18n-loader)
 * todo: setup thread-loader/worker-loader
 * todo: add a script that opts out of multi language support
