@@ -5,11 +5,11 @@ add .global.{css|sass|scss} support
 add .lazy.{css|sass|scss} support
 add .inj.{css|sass|scss} support - inline css
 add .tag.{css|sass|scss} support - tag css
+install "mini-css-extract-plugin"
 * todo: install postcss (?)
 *     - setup browserlist
 *     - setup plugins + plugins options
 * todo: install dist-sass to make compilation faster
-* todo: install "mini-css-extract-plugin"
 * todo: add css "hot" support
 * todo:
 * todo: skip typescript type checking in production build (package)
@@ -29,7 +29,7 @@ add .tag.{css|sass|scss} support - tag css
 * todo: setup chunks optimization ( sizes, names, etc...)
 * todo: add build optimizations/ improve performance ( reduce build time)
 * todo: add chunks report package
-* todo:
+* todo: setup chunk names + output resources dir's (css/js/resources)
 * todo:
 load webpack config based on cli "env" variable + all files with this structure webpack.[env].js
 add "--env sourcemap" to enable sourcemaps

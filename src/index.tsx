@@ -1,4 +1,4 @@
-import "./global/styles/styles.css"
+import "./styles/style.global.link.css"
 import svg from "./image.inj.svg"
 
 

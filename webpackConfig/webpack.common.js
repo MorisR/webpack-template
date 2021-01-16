@@ -4,6 +4,8 @@ const {DefinePlugin} = require("webpack");
 const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const pathToDist = path.resolve(__dirname, "..", "dist");
 const pathToSrc = path.resolve(__dirname, "..", "src");
@@ -52,7 +54,8 @@ module.exports = ({sourcemap = false})=>({
 
             //#region style files -----------------
 
-            // style-loader - link the style to the html (linkTags/lazy/styleTags)
+
+            // style-loader/mini-css-extract-plugin - link the style to the html (linkTags/lazy/styleTags)
             {
                 test: /^.*(?=\.lazy\.).*\.(css|s[ac]ss)$/i,
                 use: {
@@ -65,15 +68,12 @@ module.exports = ({sourcemap = false})=>({
 
             },
             {
+                // mini-css-extract-plugin - load css files as is ( not in/through js)
                 test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
-                use: {
-                    loader: "style-loader",
-                    options: {
-                        esModule: true,
-                        injectType: "linkTag"
-                    }
-                },
-
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                    publicPath:"/styles/"
+                }
             },
             {
                 test: /^((?!\.(link|lazy)\.).)*\.(css|s[ca]ss)$/i,
@@ -177,6 +177,11 @@ module.exports = ({sourcemap = false})=>({
     },
 
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].[hash].css',
+            chunkFilename: '[name].[contenthash].js',
+        }),
+
         //html loader
         new MergeablePlugin(HtmlWebpackPlugin, {
             template: path.resolve(pathToSrc, "index.html"),
