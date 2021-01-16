@@ -17,6 +17,8 @@ function styleProcessingRules(props) {
 
 
     /**@type {RuleSetRule[]}*/
+
+    //load css-loader
     const res = [
         {
             loader:"css-loader",
@@ -41,9 +43,15 @@ function styleProcessingRules(props) {
                 },
                 sourceMap,
             },
-        },
+        }
     ]
 
+    //load postcss
+    res.push(  {
+        loader:"postcss-loader",
+    })
+
+    //load sass
     if (sass) {
         res[0].options.importLoaders = 2;
         res.push({
@@ -64,5 +72,8 @@ function styleProcessingRules(props) {
     return res;
 
 }
+
+
+
 
 module.exports = styleProcessingRules
