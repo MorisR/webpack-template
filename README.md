@@ -13,7 +13,7 @@
     - [ ] .link.[style]
 - [ ] document webpack custom configuration  
     - [ ] MergablePlugin
-    - [ ] __order
+    - [ ] ruleOrder field
     - [ ] webpack.[env].js
     - [ ] webpack.default.js - always first on merge order
     - [ ] use "webpack(\w?\d?)*.[env].js" to set the order (e.g. webpack_0.production.js)

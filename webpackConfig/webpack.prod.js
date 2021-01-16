@@ -40,7 +40,7 @@ module.exports = {
                 test: /^((?!\.same).)*\.(png|jpg|jpeg|jfif|pjpeg|pjp|gif|svg|webp|avif|apng)$/i,
                 loader: 'image-webpack-loader',
                 enforce: "pre",
-                __order:1,
+                ruleOrder:1,
             },
 
             //todo: skip ts type checking

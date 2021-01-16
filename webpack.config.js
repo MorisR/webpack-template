@@ -15,8 +15,8 @@ const mergeRules = mergeWithRules({
     },
 })
 function sortRules(rules) {
-    rules.sort((a, b) => (a.__order || Number.POSITIVE_INFINITY) - (b.__order || Number.POSITIVE_INFINITY))
-        .forEach(rule => delete rule.__order)
+    rules.sort((a, b) => (a.ruleOrder || Number.POSITIVE_INFINITY) - (b.ruleOrder || Number.POSITIVE_INFINITY))
+        .forEach(rule => delete rule.ruleOrder)
     return rules;
 }
 function mergeConfigs(...configObjects) {
