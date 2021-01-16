@@ -1,10 +1,9 @@
 const path = require("path")
-const readDir = require("fs-readdir-recursive");
+const {getConfigFilePaths, getConfigOptions} = require("./webpackConfig/util/configFilesPaths");
 const {MergeConfigWithMergeablePlugin} = require("./webpackConfig/plugins/MergeablePlugin");
 const {mergeWithRules, mergeWithCustomize} = require("webpack-merge")
 
-const webpackConfigDir = path.resolve(__dirname, "webpackConfig")
-const webpackConfigFileNameRegex = /^webpack(\w?\d?)*\.\w+\.js$/i;
+
 
 const mergeRules = mergeWithRules({
     rules: {
@@ -15,7 +14,6 @@ const mergeRules = mergeWithRules({
         },
     },
 })
-
 function sortRules(rules) {
     rules.sort((a, b) => (a.__order || Number.POSITIVE_INFINITY) - (b.__order || Number.POSITIVE_INFINITY))
         .forEach(rule => delete rule.__order)
@@ -42,30 +40,15 @@ function mergeConfigs(...configObjects) {
     })(...configObjects, {plugins: []})
 
 }
-function getConfigFilePaths() {
-    const dirContent = readDir(webpackConfigDir)
-    const webpackConfigFiles = dirContent.filter((dir) => webpackConfigFileNameRegex.test(path.basename(dir)))
-    const res = new Map();
-    webpackConfigFiles.forEach(relativeDir => {
-        const dir = path.resolve(webpackConfigDir, relativeDir)
-        const configType = path.basename(dir).toLowerCase().split(".")[1]
-
-        if (res.has(configType))
-            res.get(configType).push(dir)
-        else
-            res.set(configType, [dir])
-
-    })
-    return res;
-}
 function sortConfigFilesByName(a,b){
     return path.basename(a).toLowerCase() - path.basename(b).toLowerCase()
 }
 
+
 function getConfig(env) {
 
     const configFilesPaths = getConfigFilePaths()
-    const availableWebpackOptions = [...configFilesPaths.keys()]
+    const availableWebpackOptions = getConfigOptions()
     const envOptions = Object.keys(env || {}).filter(key => env[key] === true)
     const matchingFilePaths = []
 
