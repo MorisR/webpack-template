@@ -2,6 +2,7 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin")
 const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const {DefinePlugin} = require("webpack");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
 
@@ -26,7 +27,9 @@ module.exports = {
                     ecma: "2017",
                 },
                 extractComments: "all",
-            })]
+            }),
+            new CssMinimizerPlugin()
+        ]
     },
 
     //#endregion
@@ -50,7 +53,7 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new MergeablePlugin(DefinePlugin, {PRODUCTION: true})
+        new MergeablePlugin(DefinePlugin, {PRODUCTION: true}),
     ]
 
     //#endregion
