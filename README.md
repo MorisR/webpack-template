@@ -22,6 +22,7 @@
     - [ ] sourcemap
     - [ ] loading config files
     - [ ] loading env variables
+    - [ ] "loadSystemEnv" loading system environment
 - [ ] state potential problems that could accrue
     - [ ] "resolve-url-loader" plugin
 - [ ]  

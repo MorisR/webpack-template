@@ -42,11 +42,7 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin({cleanStaleWebpackAssets: false}),
-        new MergeablePlugin(DefinePlugin, {
-            DEVELOPMENT: true,
-            PRODUCTION: false,
-            'process.env.NODE_ENV': JSON.stringify('development'),
-        }),
+        new MergeablePlugin(DefinePlugin, {DEVELOPMENT: true}),
         //html loader
         new MergeablePlugin(HtmlWebpackPlugin, {
             title: "development"

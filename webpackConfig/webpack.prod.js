@@ -1,13 +1,13 @@
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin")
 const {MergeablePlugin} = require("./plugins/MergeablePlugin");
-const {DefinePlugin} =  require("webpack");
+const {DefinePlugin} = require("webpack");
 
 module.exports = {
 
     //#region ------basic---------------------------------------------------------------
 
-    mode:"production",
+    mode: "production",
 
     output: {
         filename: '[name].[contenthash].js',
@@ -22,11 +22,11 @@ module.exports = {
         minimize: true,
         minimizer: [
             new TerserPlugin({
-            terserOptions: {
-                ecma: "2017",
-            },
-            extractComments:"all",
-        })]
+                terserOptions: {
+                    ecma: "2017",
+                },
+                extractComments: "all",
+            })]
     },
 
     //#endregion
@@ -50,12 +50,8 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new MergeablePlugin(DefinePlugin, {
-            DEVELOPMENT:false,
-            PRODUCTION:true,
-            'process.env.NODE_ENV': JSON.stringify('production'),
-        } )
-    ],
+        new MergeablePlugin(DefinePlugin, {PRODUCTION: true})
+    ]
 
     //#endregion
 
