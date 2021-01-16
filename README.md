@@ -18,6 +18,10 @@
     - [ ] webpack.default.js - always first on merge order
     - [ ] use "webpack(\w?\d?)*.[env].js" to set the order (e.g. webpack_0.production.js)
 - [ ] document package.json scripts
+- [ ] document cli variables
+    - [ ] sourcemap
+    - [ ] loading config files
+    - [ ] loading env variables
 - [ ] state potential problems that could accrue
     - [ ] "resolve-url-loader" plugin
 - [ ]  
