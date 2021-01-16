@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {MergeablePlugin} = require("./MergeablePlugin");
+const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const {DefinePlugin} = require("webpack");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
@@ -41,22 +41,6 @@ module.exports = {
     //#endregion
 
     //#region ------plugins + rules-----------------------------------------------------
-
-    module: {
-        rules: [
-            //cancel css source maps
-            //todo cancel scss/sass source maps
-            {
-                test: /\.css$/i,
-                use: [
-                    {
-                        loader: "css-loader",
-                        options: {sourceMap: true}
-                    }
-                ]
-            }
-        ]
-    },
 
     plugins: [
         new CleanWebpackPlugin({cleanStaleWebpackAssets: false}),

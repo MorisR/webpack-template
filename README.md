@@ -6,10 +6,11 @@
     - [ ] .str.[img]
     - [ ] .inj.[svg]
 - [ ] document css naming convention
-    - [ ] .module.[style]
+    - [ ] .global.[style]
+    - [ ] .pure.[style]
+    - [ ] .icss.[style] - https://webpack.js.org/loaders/css-loader/#separating-interoperable-css-only-and-css-module-features
     - [ ] .lazy.[style]
-    - [ ] .tag.[style]
-    - [ ] .singleton.[style] (?)
+    - [ ] .link.[style]
 - [ ] document webpack custom configuration  
     - [ ] MergablePlugin
     - [ ] __order

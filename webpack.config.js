@@ -1,6 +1,6 @@
 const path = require("path")
 const readDir = require("fs-readdir-recursive");
-const {MergeConfigWithMergeablePlugin} = require("./webpackConfig/MergeablePlugin");
+const {MergeConfigWithMergeablePlugin} = require("./webpackConfig/plugins/MergeablePlugin");
 const {mergeWithRules, mergeWithCustomize} = require("webpack-merge")
 
 const webpackConfigDir = path.resolve(__dirname, "webpackConfig")
