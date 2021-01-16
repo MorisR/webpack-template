@@ -7,9 +7,7 @@
     "-----------------------------build-scripts----------------------------------": "",
     "start": "webpack serve --env common --env dev  --env sourcemap",
     "build": "webpack --env common --env prod",
-    "buildWithSourcemap": "webpack --env common --env prod --env sourcemap",
-
-    
+    "buildWithSourcemap": "webpack --env common --env prod --env sourcemap"
   },
   "keywords": [],
   "author": "",
