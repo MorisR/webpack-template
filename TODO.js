@@ -96,6 +96,7 @@ add other packages--------------------------------------------------------------
 
 
 research needed-------------------------------------------------------------------------------------------
+* todo: go over available webpack plugins in webpack documentation
 * todo: go over sass documentation
 * todo: go over ts documentation
 * todo: go over tsconfig.js available settings
