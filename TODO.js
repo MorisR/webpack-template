@@ -47,8 +47,8 @@ environment variables-----------------------------------------------------------
 https://webpack.js.org/guides/environment-variables/
 https://github.com/mrsteele/dotenv-webpack
 https://webpack.js.org/plugins/environment-plugin/
-* todo: load env variables based on config types (e.g. .env / dev.emv / production.env)
-* todo: add webpack global packages/variables
+load env variables based on config types (e.g. .env / dev.emv / production.env)
+* todo: add webpack global packages/variables (util)
 
 debug mode--------------------------------------------------------------------------------------------
 * todo: resolve console logs in browser
