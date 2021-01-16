@@ -15,7 +15,7 @@ function minifyInlineSvg(content) {
     return svgToMiniDataURI(content);
 }
 
-module.exports = {
+module.exports = ({sourcemap = false})=>({
     //#region ------basic---------------------------------------------------------------
 
     target: "web",
@@ -25,10 +25,14 @@ module.exports = {
         assetModuleFilename: "resources/[name].[contenthash][ext]",
         filename: '[name].[contenthash].js'
     },
+
+    //#endregion
+
+    //#region ------dev + optimizations-------------------------------------------------
     resolve: {
         symlinks: false,
     },
-
+    devtool: sourcemap? 'source-map' : false,
     //#endregion
 
     //#region ------plugins + rules-----------------------------------------------------
@@ -85,21 +89,21 @@ module.exports = {
             //load sass/scss + css globals/locals(modules)/pure with explicit exports (icss)
             {
                 test: /^.*(?=\.icss\.).*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: true}),
+                use: styleProcessingRules({sass: false, icss: true,sourcemap}),
             },
             {
                 test: /^.*(?=\.icss\.).*\.s[ac]ss$/i,
-                use: styleProcessingRules({sass: true, icss: true}),
+                use: styleProcessingRules({sass: true, icss: true,sourcemap}),
             },
 
             //load sass/scss + css globals/locals(modules)/pure
             {
                 test: /^((?!\.icss\.).)*\.css$/i,
-                use: styleProcessingRules({sass: false, icss: false}),
+                use: styleProcessingRules({sass: false, icss: false,sourcemap}),
             },
             {
                 test: /^((?!\.icss\.).)*\.s[ca]ss$/i,
-                use: styleProcessingRules({sass: true, icss: false}),
+                use: styleProcessingRules({sass: true, icss: false,sourcemap}),
             },
 
             //#endregion
@@ -186,4 +190,4 @@ module.exports = {
     ],
 
     //#endregion
-};
+});

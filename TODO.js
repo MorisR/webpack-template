@@ -1,10 +1,10 @@
 /*
-* load sass files
-* add .module.{css|sass|scss} support
-* add .global.{css|sass|scss} support
-* add .lazy.{css|sass|scss} support
-* add .inj.{css|sass|scss} support - inline css
-* add .tag.{css|sass|scss} support - tag css
+load sass files
+add .module.{css|sass|scss} support
+add .global.{css|sass|scss} support
+add .lazy.{css|sass|scss} support
+add .inj.{css|sass|scss} support - inline css
+add .tag.{css|sass|scss} support - tag css
 * todo: install postcss (?)
 *     - setup browserlist
 *     - setup plugins + plugins options
@@ -32,7 +32,7 @@
 * todo:
 * todo:
 load webpack config based on cli "env" variable + all files with this structure webpack.[env].js
-* todo: add "--env sourcemap" to enable sourcemaps
+add "--env sourcemap" to enable sourcemaps
 * todo: browserList support + ts target ( maybe link to cli param)
 * todo: resolve console logs in browser
 * todo: show overlay errors

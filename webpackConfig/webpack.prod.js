@@ -18,8 +18,6 @@ module.exports = {
 
     //#region ------development---------------------------------------------------------
 
-    devtool: false,
-
     optimization: {
         minimize: true,
         minimizer: [
