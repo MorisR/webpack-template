@@ -43,8 +43,9 @@ module.exports = ({sourcemap = false}) => ({
     module: {
         rules: [
             //#region ts/tsx files ----------------
+
             {
-                test: /\.tsx?$/i,
+                test: /\.(tsx?|jsx?)$/i,
                 use: {
                     loader: "ts-loader",
                     options: {
@@ -53,7 +54,6 @@ module.exports = ({sourcemap = false}) => ({
                 },
                 include: pathToInclude,
                 exclude: pathToNodeModules,
-
             },
 
             //#endregion
