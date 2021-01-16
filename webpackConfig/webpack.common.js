@@ -43,21 +43,21 @@ module.exports = (env) => {
 
         //#region ------plugins + rules-----------------------------------------------------
 
-        module: {
-            rules: [
-                //#region ts/tsx files ----------------
-                {
-                    test: /\.tsx?$/i,
-                    use: {
-                        loader: "ts-loader",
-                        options: {
-                            transpileOnly: true
-                        }
-                    },
-                    include: pathToInclude,
-                    exclude: pathToNodeModules,
+    module: {
+        rules: [
+            //#region ts/tsx files ----------------
 
+            {
+                test: /\.(tsx?|jsx?)$/i,
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        transpileOnly: true
+                    }
                 },
+                include: pathToInclude,
+                exclude: pathToNodeModules,
+            },
 
                 //#endregion
 

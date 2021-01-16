@@ -66,6 +66,7 @@ service worker------------------------------------------------------------------
 * todo: add a script that opts out of serviceWorker
 
 add other packages-------------------------------------------------------------------------------------
+
 ------testing------
 * todo: add testing webpack config
 * todo: add testing package ( *.test.ts )
@@ -84,7 +85,7 @@ add other packages--------------------------------------------------------------
 https://www.npmjs.com/package/fork-ts-checker-webpack-plugin#eslint-options
 https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project
 setup linter
-* todo: setup eslint settings/custom configuration
+* todo: configure typescript linter rules https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
 * todo: setup eslint logging level
 * todo: add a script that opts out of linter
 
