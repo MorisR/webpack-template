@@ -11,6 +11,8 @@
 * todo: add css "hot" support
 * todo:
 * todo: skip typescript type checking in production build (package)
+* todo: add babel autoprefixer or setup typescript settings
+* todo: setup browserlist for postcss/babel/ts
 * todo:
 * todo: there's a package that generates supported images for android/ios/web/favicon
 *       find it and link it to *.[multi|support].[imgExt]
@@ -27,8 +29,8 @@
 * todo: add chunks report package
 * todo:
 * todo:
+load webpack config based on cli "env" variable + all files with this structure webpack.[env].js
 * todo: add "--env sourcemap" to enable sourcemaps
-* todo: load webpack config based on cli "env" variable + all files with this structure webpack.[env].js
 * todo: browserList support + ts target ( maybe link to cli param)
 * todo: resolve console logs in browser
 * todo: show overlay errors
