@@ -80,9 +80,6 @@ module.exports = (env) => {
                     // mini-css-extract-plugin - load css files as is ( not in/through js)
                     test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
                     loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        publicPath: "/styles/"
-                    }
                 },
                 {
                     test: /^((?!\.(link|lazy)\.).)*\.(css|s[ca]ss)$/i,
@@ -206,8 +203,8 @@ module.exports = (env) => {
 
             //loads css as .css files and not from js bundle
             new MiniCssExtractPlugin({
-                filename: '[name].[hash].css',
-                chunkFilename: '[name].[contenthash].js',
+                filename: '/styles/[name].[hash].css',
+                chunkFilename: '/styles/[name].[contenthash].js',
             }),
 
             //html loader
