@@ -111,6 +111,12 @@ function getConfig(env) {
     if (!configObjects.length)
         throw new Error(`No webpack config file is used, please run again with "--env" arg equal to one (or more) of the following options, [${availableWebpackOptions.join(", ")}]`)
 
+    //log which files were loaded and merged
+    console.log("---------------------------------------------")
+    console.log("loaded webpack config in the following order")
+    console.log(matchingFilePaths)
+    console.log("---------------------------------------------\n")
+
     //merge config objects and return the result
     return mergeConfigs(...configObjects)
 }
