@@ -87,8 +87,11 @@ function getConfig(env) {
 
     //read config files
     const configObjects = matchingFilePaths
-        .map(path => require(path))
-        .map(config=> typeof config ==='function'? config(env) : config)
+        .map(modulePath => {
+            const module = require(modulePath)
+            return typeof module ==='function'? module(env) : module
+        })
+
 
     //if no config files were found throw an error
     if (!configObjects.length)
