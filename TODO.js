@@ -1,11 +1,10 @@
 /*
-css-----------------------------------------------------------------------------------------
 
+css-----------------------------------------------------------------------------------------
 load sass files
 add .module.{css|sass|scss} support - by default it's module
 add .global.{css|sass|scss} support
 add .lazy.{css|sass|scss} support
-add .icss.{css|sass|scss} support - requires to manually export styles from scss
 install "mini-css-extract-plugin"
 * todo: install postcss (?)
 *     - setup browserlist
@@ -18,6 +17,7 @@ typescript----------------------------------------------------------------------
 skip typescript type checking in production build (package)
 * todo: add babel autoprefixer or setup typescript settings
 * todo: convert images with "*.inj.svg" within 'em to html tags (in .d.ts)
+* todo: use babel to load typescript
 
 images---------------------------------------------------------------------------------------------
 * todo: there's a package that generates supported images for android/ios/web/favicon
@@ -40,6 +40,8 @@ add "--env sourcemap" to enable sourcemaps
 * todo: configure/optimize clean-webpack-plugin
 * todo: setup gzip-loader
 * todo: setup browserlist for postcss/babel/ts (maybe load em from a single source)
+* todo: set output dir of all resources
+* todo: use "swc" at development time to make builds faster
 
 
 environment variables---------------------------------------------------------------------------------

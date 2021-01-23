@@ -8,7 +8,7 @@
 - [ ] document css naming convention
     - [ ] .global.[style]
     - [ ] .pure.[style]
-    - [ ] .icss.[style] - https://webpack.js.org/loaders/css-loader/#separating-interoperable-css-only-and-css-module-features
+    - [ ] ~~.icss.[style] - https://webpack.js.org/loaders/css-loader/#separating-interoperable-css-only-and-css-module-features~~
     - [ ] .lazy.[style]
     - [ ] .link.[style]
 - [ ] document webpack custom configuration  
@@ -25,4 +25,4 @@
     - [ ] "loadSystemEnv" loading system environment
 - [ ] state potential problems that could accrue
     - [ ] "resolve-url-loader" plugin
-- [ ]  
+- [ ]  document dotenv available paths and link with webpack config mode
