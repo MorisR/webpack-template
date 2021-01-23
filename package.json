@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/favicons-webpack-plugin": "^2.1.0",
     "@types/react": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "@types/webpack": "^4.41.26",
