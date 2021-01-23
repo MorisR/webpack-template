@@ -22,7 +22,8 @@ module.exports = {
         "react/jsx-no-duplicate-props": "error",
         "react/jsx-no-target-blank":"warn",
         "react/jsx-pascal-case":"error",
-        "react-hooks/exhaustive-deps": 'off'
+        "react-hooks/exhaustive-deps": 'off',
+        "@typescript-eslint/ban-ts-comment":"off"
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     },

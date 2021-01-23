@@ -3,29 +3,24 @@
 
 /**
  * @param {boolean} [props.sourcemap] - is sourcemap enabled.
- * @param {boolean} [props.sass] - load sass rules
  * @param {boolean} [props.icss] - load sass rules
  * @return {RuleSetRule[]}
  */
 function styleProcessingRules(props) {
     const {
         sourceMap = false,
-        sass = false,
         icss = false
     } = props;
 
 
-    /**@type {RuleSetRule[]}*/
-
-    //load css-loader
-    const res = [
+    return [
         {
-            loader:"css-loader",
+            loader: "css-loader",
             options: {
                 esModule: true,
-                importLoaders:1,
+                importLoaders: 3,
                 modules: {
-                    compileType: icss? "icss" : "module",
+                    compileType: icss ? "icss" : "module",
                     localIdentName: "[name]__[hash:base64:5]",
                     exportLocalsConvention: "camelCase",
                     exportGlobals: true,
@@ -43,38 +38,21 @@ function styleProcessingRules(props) {
                 },
                 sourceMap,
             },
-        }
-    ]
-
-    //load postcss
-    res.push(  {
-        loader:"postcss-loader",
-    })
-
-    //load sass
-    if (sass) {
-        res[0].options.importLoaders = 3;
-        res.push(
-            {
-                loader: "resolve-url-loader",
-                options: {
-                    sourceMap,
-                }
-            },
-            {
-                loader: "sass-loader",
-                options: {
-                    sourceMap: true,
-                    // sourceMapContents: false,
-                },
-            })
-    }
-
-    return res;
+        },
+        {
+            loader: "resolve-url-loader",
+            options: {
+                sourceMap,
+            }
+        },
+        {
+            loader: "sass-loader",
+            options: {sourceMap: true},
+        },
+        "postcss-loader",
+    ];
 
 }
-
-
 
 
 module.exports = styleProcessingRules

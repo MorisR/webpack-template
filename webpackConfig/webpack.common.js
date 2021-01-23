@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const svgToMiniDataURI = require("mini-svg-data-uri");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const {loadProjectEnv,loadSystemEnv} = require("./plugins/envPlugin");
+const {loadProjectEnv, loadSystemEnv} = require("./plugins/envPlugin");
 
 
 const pathToDist = path.resolve(__dirname, "..", "dist");
@@ -43,21 +43,20 @@ module.exports = (env) => {
 
         //#region ------plugins + rules-----------------------------------------------------
 
-    module: {
-        rules: [
-            //#region ts/tsx files ----------------
-
-            {
-                test: /\.(tsx?|jsx?)$/i,
-                use: {
-                    loader: "ts-loader",
-                    options: {
-                        transpileOnly: true
-                    }
+        module: {
+            rules: [
+                //#region js/jsx/ts/tsx files ----------------
+                {
+                    test: /\.([tj]sx?)$/i,
+                    use: {
+                        loader: "ts-loader",
+                        options: {
+                            transpileOnly: true
+                        }
+                    },
+                    include: pathToInclude,
+                    exclude: pathToNodeModules,
                 },
-                include: pathToInclude,
-                exclude: pathToNodeModules,
-            },
 
                 //#endregion
 
@@ -66,50 +65,36 @@ module.exports = (env) => {
 
                 // style-loader/mini-css-extract-plugin - link the style to the html (linkTags/lazy/styleTags)
                 {
-                    test: /^.*(?=\.lazy\.).*\.(css|s[ac]ss)$/i,
+                    test: /^.*(?=\.lazy\.).*\.(s[ca]|c)ss$/i,
                     use: {
                         loader: "style-loader",
                         options: {
-                            esModule: true,
                             injectType: "lazyStyleTag"
                         }
                     },
-
                 },
                 {
                     // mini-css-extract-plugin - load css files as is ( not in/through js)
-                    test: /^.*(?=\.link\.).*\.(css|s[ac]ss)$/i,
+                    test: /^.*(?=\.link\.).*\.(s[ca]|c)ss$/i,
                     loader: MiniCssExtractPlugin.loader,
                 },
                 {
-                    test: /^((?!\.(link|lazy)\.).)*\.(css|s[ca]ss)$/i,
-                    use: {
-                        loader: "style-loader",
-                        options: {
-                            esModule: true,
-                        }
-                    },
-
+                    test: /^((?!\.(link|lazy)\.).)*\.(s[ca]|c)ss$/i,
+                    use: "style-loader"
                 },
 
-                //load sass/scss + css globals/locals(modules)/pure with explicit exports (icss)
-                {
-                    test: /^.*(?=\.icss\.).*\.css$/i,
-                    use: styleProcessingRules({sass: false, icss: true, sourcemap}),
-                },
-                {
-                    test: /^.*(?=\.icss\.).*\.s[ac]ss$/i,
-                    use: styleProcessingRules({sass: true, icss: true, sourcemap}),
-                },
 
-                //load sass/scss + css globals/locals(modules)/pure
+                // *.global / *.pure / all the rest
+
+                //load style with explicit exports (icss)
                 {
-                    test: /^((?!\.icss\.).)*\.css$/i,
-                    use: styleProcessingRules({sass: false, icss: false, sourcemap}),
+                    test: /^.*(?=\.icss\.).*\.(s[ca]|c)ss$/i,
+                    use: styleProcessingRules({ icss: true, sourcemap}),
                 },
+                //load style with module exports
                 {
-                    test: /^((?!\.icss\.).)*\.s[ca]ss$/i,
-                    use: styleProcessingRules({sass: true, icss: false, sourcemap}),
+                    test: /^((?!\.icss\.).)*\.(s[ca]|c)ss$/i,
+                    use: styleProcessingRules({ icss:false, sourcemap}),
                 },
 
                 //#endregion
@@ -203,8 +188,8 @@ module.exports = (env) => {
 
             //loads css as .css files and not from js bundle
             new MiniCssExtractPlugin({
-                filename: '/styles/[name].[hash].css',
-                chunkFilename: '/styles/[name].[contenthash].js',
+                // filename: '/styles/[name].[hash].css',
+                // chunkFilename: '/styles/[name].[contenthash].js',
             }),
 
             //html loader
@@ -218,7 +203,7 @@ module.exports = (env) => {
             // env variables from "/emv/[mode].env" files
             ...loadProjectEnv(env),
             env?.loadSystemEnv && loadSystemEnv()
-        ].filter(x=>x),
+        ].filter(x => x),
 
         //#endregion
     })
