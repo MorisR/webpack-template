@@ -24,7 +24,7 @@ module.exports = (env) => {
         //#region ------basic---------------------------------------------------------------
 
         target: "web",
-        entry: ["./src/index.tsx","./src/index2.ts"],
+        entry: "./src/index.tsx",
         output: {
             path: pathToDist,
             assetModuleFilename: "resources/[name].[contenthash][ext]",
@@ -76,7 +76,7 @@ module.exports = (env) => {
                 {
                     // mini-css-extract-plugin - load css files as is ( not in/through js)
                     test: /^.*(?=\.link\.).*\.(s[ca]|c)ss$/i,
-                    loader: MiniCssExtractPlugin.loader,
+                    loader: MiniCssExtractPlugin?.loader,
                 },
 
                 //by default load css-in-js
@@ -115,8 +115,18 @@ module.exports = (env) => {
                                 sourceMap: sourcemap,
                             },
                         },
-                        //apply postcss autoprefixer + other plugins
-                        "postcss-loader",
+                        //apply postcss autoprefixer + better fonts support + other plugins
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                postcssOptions: {
+                                    plugins: [
+                                        "postcss-font-magician",
+                                        "autoprefixer"
+                                    ]
+                                }
+                            }
+                        },
                         //load sass files
                         {
                             loader: "resolve-url-loader",
