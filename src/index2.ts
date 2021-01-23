@@ -1,7 +1,6 @@
-import styles from "./styles/style2.lazy.scss"
+import styles from "./styles/style2.icss.scss"
 
-styles.use()
 
 const rootElement = document.getElementById("root")
 rootElement.innerText="how are you doing"
-rootElement.classList.toggle(styles.locals.component,true)
+rootElement.classList.toggle(styles.component,true)

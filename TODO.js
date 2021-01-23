@@ -2,11 +2,10 @@
 css-----------------------------------------------------------------------------------------
 
 load sass files
-add .module.{css|sass|scss} support
+add .module.{css|sass|scss} support - by default it's module
 add .global.{css|sass|scss} support
 add .lazy.{css|sass|scss} support
-add .inj.{css|sass|scss} support - inline css
-add .tag.{css|sass|scss} support - tag css
+add .icss.{css|sass|scss} support - requires to manually export styles from scss
 install "mini-css-extract-plugin"
 * todo: install postcss (?)
 *     - setup browserlist
