@@ -1,4 +1,3 @@
-const styleProcessingRules = require("./rules/styleProcessingRules");
 const path = require("path");
 const {MergeablePlugin} = require("./plugins/MergeablePlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -25,7 +24,7 @@ module.exports = (env) => {
         //#region ------basic---------------------------------------------------------------
 
         target: "web",
-        entry: "./src/index.tsx",
+        entry: ["./src/index.tsx","./src/index2.ts"],
         output: {
             path: pathToDist,
             assetModuleFilename: "resources/[name].[contenthash][ext]",
@@ -62,8 +61,7 @@ module.exports = (env) => {
 
                 //#region style files -----------------
 
-
-                // style-loader/mini-css-extract-plugin - link the style to the html (linkTags/lazy/styleTags)
+                // .lazy.[ext] - to load lazy load css
                 {
                     test: /^.*(?=\.lazy\.).*\.(s[ca]|c)ss$/i,
                     use: {
@@ -73,28 +71,64 @@ module.exports = (env) => {
                         }
                     },
                 },
+
+                // .link.[ext] - uses "style-loader/mini-css-extract-plugin" to load css as links (not as part of the script bundle)
                 {
                     // mini-css-extract-plugin - load css files as is ( not in/through js)
                     test: /^.*(?=\.link\.).*\.(s[ca]|c)ss$/i,
                     loader: MiniCssExtractPlugin.loader,
                 },
+
+                //by default load css-in-js
                 {
                     test: /^((?!\.(link|lazy)\.).)*\.(s[ca]|c)ss$/i,
                     use: "style-loader"
                 },
 
-
-                // *.global / *.pure / all the rest
-
-                //load style with explicit exports (icss)
+                // *.global.[ext] / *.pure.[ext] / .css / .sass / .scss
                 {
-                    test: /^.*(?=\.icss\.).*\.(s[ca]|c)ss$/i,
-                    use: styleProcessingRules({ icss: true, sourcemap}),
-                },
-                //load style with module exports
-                {
-                    test: /^((?!\.icss\.).)*\.(s[ca]|c)ss$/i,
-                    use: styleProcessingRules({ icss:false, sourcemap}),
+                    test: /\.(s[ca]|c)ss$/i,
+                    use: [
+                        // add support for .global and.pure ( by default load as modules )
+                        {
+                            loader: "css-loader",
+                            options: {
+                                esModule: true,
+                                importLoaders: 3,
+                                modules: {
+                                    compileType: "module",
+                                    localIdentName: "[name]__[hash:base64:5]",
+                                    exportLocalsConvention: "camelCase",
+                                    exportGlobals: true,
+                                    mode: (resourcePath) => {
+                                        if (/^.*(?=\.pure\.).*\.(css|s[ca]ss)$/i.test(resourcePath)) {
+                                            return "pure";
+                                        }
+
+                                        if (/^.*(?=\.global\.).*\.(css|s[ca]ss)$/i.test(resourcePath)) {
+                                            return "global";
+                                        }
+
+                                        return "local";
+                                    },
+                                },
+                                sourceMap: sourcemap,
+                            },
+                        },
+                        //apply postcss autoprefixer + other plugins
+                        "postcss-loader",
+                        //load sass files
+                        {
+                            loader: "resolve-url-loader",
+                            options: {
+                                sourceMap: sourcemap,
+                            }
+                        },
+                        {
+                            loader: "sass-loader",
+                            options: {sourceMap: true},
+                        },
+                    ]
                 },
 
                 //#endregion
