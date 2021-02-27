@@ -10,7 +10,7 @@ const {loadProjectEnv, loadSystemEnv} = require("./plugins/envPlugin");
 const pathToDist = path.resolve(__dirname, "..", "dist");
 const pathToSrc = path.resolve(__dirname, "..", "src");
 
-const pathToNodeModules = /node_modules/;
+const pathToNodeModules = /(node_modules|bower_components)/;
 const pathToInclude = /src/;
 
 function minifyInlineSvg(content) {
@@ -36,6 +36,7 @@ module.exports = (env) => {
         //#region ------dev + optimizations-------------------------------------------------
         resolve: {
             symlinks: false,
+            extensions: ['.js', '.jsx', '.ts', '.tsx']
         },
         devtool: sourcemap ? 'source-map' : false,
         //#endregion

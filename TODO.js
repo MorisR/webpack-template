@@ -11,6 +11,7 @@ install "mini-css-extract-plugin"
 *     - setup plugins + plugins options
 * todo: install dist-sass to make compilation faster
 * todo: add css "hot" support
+todo: change to global styling based on dir name
 
 
 typescript-----------------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ skip typescript type checking in production build (package)
 images---------------------------------------------------------------------------------------------
 * todo: there's a package that generates supported images for android/ios/web/favicon
 *       find it and link it to *.[multi|support].[imgExt]
+todo: convert images to webp format
 
 html-----------------------------------------------------------------------------------------------
 * todo: html-webpack-plugin package extensions
